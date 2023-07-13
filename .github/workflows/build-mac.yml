@@ -6,9 +6,10 @@ on:
       - master
       - cayley
   pull_request:
-    types: [ assigned, opened, synchronize, reopened ]
+    types: [assigned, opened, synchronize, reopened]
   repository_dispatch:
     types: [pybind-wrapper]
+  workflow_dispatch:
 
 jobs:
   mac-build:
@@ -19,13 +20,13 @@ jobs:
         os: ["macos-12", "macos-11"]
         pyversion: ["python@3.8", "python@3.9", "python@3.10"]
     steps:
-    - name: Checkout
-      uses: actions/checkout@master
-    - name: Build the macOS wheels
-      run: |
-        ./build-macos-new.sh ${{ matrix.pyversion }}
-    - name: Archive wheels
-      uses: actions/upload-artifact@v1
-      with:
-        name: wheels-macos-${{ matrix.pyversion }}-${{ matrix.os }}
-        path: ./wheelhouse
+      - name: Checkout
+        uses: actions/checkout@master
+      - name: Build the macOS wheels
+        run: |
+          ./build-macos-new.sh ${{ matrix.pyversion }}
+      - name: Archive wheels
+        uses: actions/upload-artifact@v1
+        with:
+          name: wheels-macos-${{ matrix.pyversion }}-${{ matrix.os }}
+          path: ./wheelhouse
